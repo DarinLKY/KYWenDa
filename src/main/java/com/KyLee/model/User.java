@@ -1,0 +1,65 @@
+package com.KyLee.model;
+
+/**
+ * @program: zhihu0.1
+ * @description: 用户模型Bean
+ * @author: KyLee
+ * @create: 2018-04-26 15:19
+ **/
+public class User {
+    private int id ;
+    private String name;
+
+    private String password;
+    private String slat;
+    private String email;
+
+    public String getSlat() {
+        return slat;
+    }
+
+    public void setSlat(String slat) {
+        this.slat = slat;
+    }
+
+
+    public String getEmail() {
+
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+
+    public int getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+
+    public String getPassword() {
+        return password;
+    }
+
+
+}
