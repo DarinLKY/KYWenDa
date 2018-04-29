@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<!-- 命名空间指定 -->
+<mapper namespace="com.KyLee.dao.sthDAO">
+    <!-- 指定表名 -->
+    <sql id="table">some_table_name</sql>
+    <!-- 指定字段 -->
+    <sql id="selectFields">
+        id, name, password,slat,email
+    </sql>
+    <!-- id为函数名，resultType为返回对象的类型 -->
+    <select id="some_fun" resultType="com.KyLee.model.sthBean">
+        <!-- 这里是真正执行的语句-->
+        SELECT
+        <include refid="selectFields"/>
+        FROM
+        <include refid="table"/>
+
+        <if test="userId != 0">
+            WHERE user_id = #{userId}
+        </if>
+        ORDER BY id DESC
+        <!-- 函数传入的参数 -->
+        LIMIT #{offset},#{limit}
+    </select>
+</mapper>
