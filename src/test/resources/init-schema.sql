@@ -25,11 +25,11 @@ DROP TABLE IF EXISTS `login_token`;
   CREATE TABLE `login_token` (
     `id` INT NOT NULL AUTO_INCREMENT,
     `user_id` INT NOT NULL,
-    `ticket` VARCHAR(45) NOT NULL,
+    `token_key` VARCHAR(45) NOT NULL,
     `expired` DATETIME NOT NULL,
     `status` INT NULL DEFAULT 0,
     PRIMARY KEY (`id`),
-    UNIQUE INDEX `ticket_UNIQUE` (`ticket` ASC)
+    UNIQUE INDEX `token_key_UNIQUE` (`token_key` ASC)
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 DROP TABLE IF EXISTS `comment`;

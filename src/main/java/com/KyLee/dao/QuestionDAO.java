@@ -32,8 +32,12 @@ public interface QuestionDAO {
     @Select({"select * from " +tableName+" where user_id=#{id}"})
     Question selectByUserId(String id);
 
+
     @Select({"select * from " +tableName+" where user_id=#{userId} ORDER BY id DESC " +
-            " LIMIT 0,10"})
-    List<Question> selectLatestQuestions(@Param("userId") int userId, @Param("offset") int offset,
+            " LIMIT #{offset},#{limit}"})
+    List<Question> selectLatestQuestionsByUserId(@Param("userId") int userId, @Param("offset") int offset,
+                                         @Param("limit") int limit);
+    @Select({"select * from " +tableName+" ORDER BY id DESC " + " LIMIT #{offset},#{limit}"})
+    List<Question> selectLatestQuestions(@Param("offset") int offset,
                                          @Param("limit") int limit);
 }

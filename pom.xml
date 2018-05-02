@@ -66,6 +66,15 @@
 	</dependencies>
 
 	<build>
+		<resources>
+			<resource>
+				<directory>src/main/com.KyLee/resources/com.KyLee.dao</directory>
+				<includes>
+					<!-- 这里如果不加这一条，那么在spring-data.xml中配置的xml将找不到classpath:mapper/admin/AdminMapper.xml -->
+					<include>*.xml</include>
+				</includes>
+			</resource>
+		</resources>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>

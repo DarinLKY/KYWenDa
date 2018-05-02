@@ -2,8 +2,9 @@ package com.KyLee.dao;
 
 import com.KyLee.model.LoginToken;
 import com.KyLee.model.Question;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
+
+import java.util.Date;
 
 /**
  * @program: zhihu0.1
@@ -11,19 +12,24 @@ import org.apache.ibatis.annotations.Select;
  * @author: KyLee
  * @create: 2018-05-01 19:01
  **/
+@Mapper
 public interface LoginTokenDAO {
 
-    public String tableName="login_token";
-    String selectFields = " user_id ,expired,status ";
-    String insertFields = " id,user_id ,expired,status ";
-    // #{} 表示bean中的字段，需要与设置的字段名相同。
-    @Insert({"insert into "
-            ,tableName,
-            "(",
-            selectFields,
-            ") values(#{user_id},#{expired},#{status})"})
+     String tableName="login_token";
+    String selectFields = " id , user_id ,token_key ,expired,status ";
+    String insertFields = " user_id,token_key,expired,status ";
+    @Insert({"insert into ",tableName, "(", insertFields, ") values(#{userId},#{tokenKey},#{expired},#{status})"})
     int addLoginToken(LoginToken loginToken);
 
-    @Select({"select * from " +tableName+" where user_id=#{id}"})
-    LoginToken selectByUserId(String id);
+    @Select({"select * from " +tableName+" where user_id=#{userId}"})
+    LoginToken selectByUserId(int userId);
+
+    @Select({"select * from " +tableName+" where token_key=#{token_key}"})
+    LoginToken selectByKey(String token_key);
+
+    @Update({"update ", tableName, " set status=#{status} where token_key=#{tokenKey}"})
+    void  updateStatus(@Param("tokenKey") String tokenKey, @Param("status") int status);
+
+    @Update({"update ", tableName, " set expired=#{expired} where token_key=#{tokenKey}"})
+    void  updateExpired(@Param("tokenKey") String tokenKey, @Param("expired") Date expired);
 }

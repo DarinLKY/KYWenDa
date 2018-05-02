@@ -11,8 +11,8 @@ import java.util.ArrayList;
 @Mapper
 public interface UserDAO {
      String tableName="user";
-     String selectFields = " name,password,salt,email ";
-     String insertFields = " id,name,password,salt,email ";
+     String selectFields = " id,name,password,salt,email ";
+     String insertFields = " name,password,salt,email ";
     // #{} 表示bean中的字段，需要与设置的字段名相同。
     @Insert({"insert into "
             ," user ",
@@ -21,7 +21,7 @@ public interface UserDAO {
             ") values(#{id},#{name},#{password},#{salt},#{email})"})
     int addUser(User user);
 
-    @Select({"select id,name from " +tableName+" where name=#{name}"})
+    @Select({"select * from " +tableName+" where name=#{name}"})
     User selectByName(String name);
 
     @Select({"select ", selectFields, " from ", tableName, " where id=#{id}"})

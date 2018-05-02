@@ -14,6 +14,15 @@ public class LoginToken {
     private int userId;
     private Date expired;
     private int status;
+    private String tokenKey;
+
+    public String getTokenKey() {
+        return tokenKey;
+    }
+
+    public void setTokenKey(String key) {
+        this.tokenKey = key;
+    }
 
     public int getId() {
         return id;

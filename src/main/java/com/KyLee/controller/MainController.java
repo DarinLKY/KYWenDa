@@ -49,8 +49,19 @@ public class MainController {
         return "hello,spring!";
     }
     */
-    private List<ViewObject> getQuestions(int userId, int offset, int limit) {
-        List<Question> questionList = questionService.getLatestQuestions(userId, offset, limit);
+    private List<ViewObject> getQuestionsByUserId(int userId, int offset, int limit) {
+        List<Question> questionList = questionService.getLatestQuestionsByUserId(userId, offset, limit);
+        List<ViewObject> vos = new ArrayList<>();
+        for (Question question : questionList) {
+            ViewObject vo = new ViewObject();
+            vo.set("question", question);
+            vo.set("user", userService.getUser(question.getUserId()));
+            vos.add(vo);
+        }
+        return vos;
+    }
+    private List<ViewObject> getQuestions( int offset, int limit) {
+        List<Question> questionList = questionService.getLatestQuestions(offset, limit);
         List<ViewObject> vos = new ArrayList<>();
         for (Question question : questionList) {
             ViewObject vo = new ViewObject();
@@ -62,12 +73,19 @@ public class MainController {
     }
 
 
-    @RequestMapping(path={"/{userId}"},method = {RequestMethod.POST,RequestMethod.GET})
-    public String home (Model model,
+    @RequestMapping(path={"/user/{userId}"},method = {RequestMethod.POST,RequestMethod.GET})
+    public String home_index (Model model,
                         @PathVariable("userId") int userId){
-        model.addAttribute("vos", getQuestions(userId, 0, 10));
+        model.addAttribute("vos", getQuestionsByUserId(userId, 0, 10));
         return "shouye";
     }
+    @RequestMapping(path={"/"},method = {RequestMethod.POST,RequestMethod.GET})
+    public String home (Model model){
+        model.addAttribute("vos", getQuestions(0,10));
+        return "shouye";
+    }
+
+
 
 
 }
