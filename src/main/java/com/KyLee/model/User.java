@@ -11,15 +11,15 @@ public class User {
     private String name;
 
     private String password;
-    private String slat;
+    private String salt;
     private String email;
 
-    public String getSlat() {
-        return slat;
+    public String getSalt() {
+        return salt;
     }
 
-    public void setSlat(String slat) {
-        this.slat = slat;
+    public void setSalt(String salt) {
+        this.salt = salt;
     }
 
 

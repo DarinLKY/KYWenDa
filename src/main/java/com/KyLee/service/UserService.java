@@ -33,8 +33,17 @@ public class UserService {
     public ArrayList<User> getLatesetUsers(int offset, int limit){
         return userDAO.selectLatestUsers(offset,limit);
     }
-
+    public User getUser(int id){
+        return userDAO.selectById(id);
+    }
     //register_msg 作为Service与Controller的信息传递渠道。
+
+    /**
+     * @description 注册检测
+     * @param username
+     * @param password
+     * @return 包含失败信息的Map
+     */
     public Map<String,String> register(String username,String password){
         Map<String,String> context = new HashMap<String,String>();
         if (StringUtils.isEmpty(username)||StringUtils.containsWhitespace(username)){
@@ -54,8 +63,8 @@ public class UserService {
 
         User regUser = new User();
         regUser.setName(username);
-        regUser.setSlat(UUID.randomUUID().toString().substring(0, 5));
-        regUser.setPassword(MD5Util.MD5(password+regUser.getSlat()));
+        regUser.setSalt(UUID.randomUUID().toString().substring(0, 5));
+        regUser.setPassword(MD5Util.MD5(password+regUser.getSalt()));
 
         userDAO.addUser(regUser);
         return context;

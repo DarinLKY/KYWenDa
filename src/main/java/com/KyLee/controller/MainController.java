@@ -1,15 +1,23 @@
 package com.KyLee.controller;
 
+import com.KyLee.model.Question;
 import com.KyLee.model.User;
+import com.KyLee.model.ViewObject;
+import com.KyLee.service.QuestionService;
 import com.KyLee.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @program: zhihu0.1
@@ -18,14 +26,16 @@ import javax.servlet.http.HttpSession;
  * @create: 2018-04-26 14:21
  **/
 
-//@Controller
+@Controller
 public class MainController {
 
 
     @Autowired
     UserService userService;
+    @Autowired
+    QuestionService questionService;
 
-
+    /*
     @RequestMapping(path={"/"})
     @ResponseBody
     public String request (Model model,
@@ -38,21 +48,25 @@ public class MainController {
                            ){
         return "hello,spring!";
     }
+    */
+    private List<ViewObject> getQuestions(int userId, int offset, int limit) {
+        List<Question> questionList = questionService.getLatestQuestions(userId, offset, limit);
+        List<ViewObject> vos = new ArrayList<>();
+        for (Question question : questionList) {
+            ViewObject vo = new ViewObject();
+            vo.set("question", question);
+            vo.set("user", userService.getUser(question.getUserId()));
+            vos.add(vo);
+        }
+        return vos;
+    }
 
-    @RequestMapping(path={"/sqltest"})
-    @ResponseBody
-    public String sqltest (Model model,
-                           HttpServletResponse response,
-                           HttpServletRequest request,
-                           HttpSession session){
-                           //@PathVariable("userid") int userid){
-        User user = new User();
-        user.setEmail("fdf@qq.com");
-        user.setId(3);
-        user.setName("test");
-        user.setPassword("3");
-        userService.insertUser(user);
-        return "成功添加用户";
+
+    @RequestMapping(path={"/{userId}"},method = {RequestMethod.POST,RequestMethod.GET})
+    public String home (Model model,
+                        @PathVariable("userId") int userId){
+        model.addAttribute("vos", getQuestions(userId, 0, 10));
+        return "shouye";
     }
 
 

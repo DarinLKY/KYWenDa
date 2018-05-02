@@ -26,8 +26,27 @@ public class RegisterController {
     @Autowired
     UserService userService;
 
+    /**
+     * @description:主页
+     * @param model
+     * @return 注册页面
+     */
 
-    @RequestMapping(path={"/register/"},method = {RequestMethod.POST})
+    @RequestMapping(path={"/login","/relogin"})
+    public String test (Model model){
+        return "login";
+    }
+
+    /**
+     * @description:注册
+     * @param model
+     * @param response
+     * @param request
+     * @param username
+     * @param password
+     * @return 注册页面
+     */
+    @RequestMapping(path={"/register"},method = {RequestMethod.POST})
     public String register (Model model,
                            HttpServletResponse response,
                            HttpServletRequest request,
@@ -45,8 +64,6 @@ public class RegisterController {
              return "login";
          }
     }
-    @RequestMapping("/")
-    public String test (Model model){
-        return "login";
-    }
+
+
 }
