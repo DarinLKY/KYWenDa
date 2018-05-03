@@ -5,6 +5,8 @@ import com.KyLee.model.User;
 import com.KyLee.model.ViewObject;
 import com.KyLee.service.QuestionService;
 import com.KyLee.service.UserService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -28,7 +30,7 @@ import java.util.List;
 
 @Controller
 public class MainController {
-
+    private static final Logger logger = LoggerFactory.getLogger(MainController.class);
 
     @Autowired
     UserService userService;

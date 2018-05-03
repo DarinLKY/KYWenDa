@@ -28,7 +28,7 @@ public interface QuestionDAO {
     int addQuestion(Question question);
 
     @Select({"select * from " +tableName+" where user_id=#{id}"})
-    Question selectByUserId(String id);
+    Question selectByUserId(int id);
 
     List<Question> selectLatestQuestionsByUserId(@Param("userId") int userId, @Param("offset") int offset,
                                          @Param("limit") int limit);

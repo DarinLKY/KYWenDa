@@ -26,6 +26,7 @@ public class TokenInterceptor implements HandlerInterceptor {
 
     @Autowired
     TokenHolder tokenHolder;
+
     @Autowired(required = false)
     UserDAO userDAO;
 
@@ -50,6 +51,7 @@ public class TokenInterceptor implements HandlerInterceptor {
                 return true;
             }
             else{
+                //取到tokeKey对应的用户，并加入到tokenHolder中。
                 User user = userDAO.selectById(loginToken.getUserId());
                 tokenHolder.setUser(user);
                 return true;
@@ -64,7 +66,7 @@ public class TokenInterceptor implements HandlerInterceptor {
         User user =tokenHolder.getUser();
         //渲染前加入拥有token的user.
         if(modelAndView!=null && user!=null){
-            modelAndView.addObject("user",tokenHolder.getUser());
+            modelAndView.addObject("user",user);
         }
     }
 
