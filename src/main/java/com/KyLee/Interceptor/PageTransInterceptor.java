@@ -24,13 +24,16 @@ public class PageTransInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o) throws Exception {
         if (tokenHolder.getUser() == null) {
-            //这里跳转到/reglogin，后面的next=...不影响页面，只是加了变量。
+
+            //这里跳转到/reglogin，后面的next=...不影响controller页面，只是加了变量。
             //httpServletRequest.getRequestURI()是原本的请求URL。
             httpServletResponse.sendRedirect("/reglogin?next=" + httpServletRequest.getRequestURI());
             return false;
+
         }
         if (tokenHolder.getUser() != null) {
 
+            String uri =httpServletRequest.getRequestURI();
             // /user/user_id截取用户id并检测。
             String pattern = "(.*)/user/(\\d+)";
             Pattern r = Pattern.compile(pattern);
@@ -40,8 +43,9 @@ public class PageTransInterceptor implements HandlerInterceptor {
                 user_id =httpServletRequest.getRequestURI().substring(m.start()+6,m.end());
             }
 
-            //String user_id=httpServletRequest.getRequestURI().substring(6);
             int userId = Integer.parseInt(user_id);
+
+            //访问限制：当前用户通过网址访问的不是自己的主页，就必须登录。
             if(tokenHolder.getUser().getId()!=userId) {
                 httpServletResponse.sendRedirect("/reglogin");
                 return false;
