@@ -4,7 +4,7 @@
 <mapper namespace="com.KyLee.dao.QuestionDAO">
     <sql id="table">question</sql>
     <sql id="selectFields">id, title, content,user_id,created_date,comment_count</sql>
-    <select id="selectLatestQuestions" resultType="com.KyLee.model.Question">
+    <select id="selectLatestQuestionsByUserId" resultType="com.KyLee.model.Question">
         SELECT
         <include refid="selectFields"/>
         FROM

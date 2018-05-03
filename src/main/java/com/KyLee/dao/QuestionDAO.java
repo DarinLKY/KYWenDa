@@ -1,13 +1,11 @@
 package com.KyLee.dao;
 
 import com.KyLee.model.Question;
-import com.KyLee.model.User;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -32,12 +30,7 @@ public interface QuestionDAO {
     @Select({"select * from " +tableName+" where user_id=#{id}"})
     Question selectByUserId(String id);
 
-
-    @Select({"select * from " +tableName+" where user_id=#{userId} ORDER BY id DESC " +
-            " LIMIT #{offset},#{limit}"})
     List<Question> selectLatestQuestionsByUserId(@Param("userId") int userId, @Param("offset") int offset,
                                          @Param("limit") int limit);
-    @Select({"select * from " +tableName+" ORDER BY id DESC " + " LIMIT #{offset},#{limit}"})
-    List<Question> selectLatestQuestions(@Param("offset") int offset,
-                                         @Param("limit") int limit);
+
 }

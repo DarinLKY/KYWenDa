@@ -21,7 +21,7 @@ public class ZhihuWebConfiguration extends WebMvcConfigurerAdapter {
     @Autowired
     PageTransInterceptor pageTransInterceptor;
 
-    //限制进入的路径
+    //限制进入的路径，如果限制成功则在pageTransInterceptor中设置限制页面。
     private String restrictPath="/user/*";
     @Override
     public void addInterceptors(InterceptorRegistry registry) {

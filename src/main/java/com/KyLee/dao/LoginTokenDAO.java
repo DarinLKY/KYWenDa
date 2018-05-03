@@ -1,14 +1,13 @@
 package com.KyLee.dao;
 
 import com.KyLee.model.LoginToken;
-import com.KyLee.model.Question;
 import org.apache.ibatis.annotations.*;
 
 import java.util.Date;
 
 /**
  * @program: zhihu0.1
- * @description: 用户token dao
+ * @description: 用户token com.KyLee.dao
  * @author: KyLee
  * @create: 2018-05-01 19:01
  **/

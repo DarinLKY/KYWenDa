@@ -23,6 +23,7 @@ import java.util.*;
 public class UserService {
 
     private int STATUS_VAILD = 0;
+
     @Autowired(required = false)
     private UserDAO userDAO;
 
@@ -38,7 +39,9 @@ public class UserService {
     }
 
     /**
-     * @description:加载入登录token
+     * @description:加载登录token，
+     *              登陆已有账号需要把过期时间更新，
+     *              没有loginToken则新建
      * @param userId
      * @return 已有的或者新生成的logintoken
      */
@@ -146,6 +149,11 @@ public class UserService {
         map.put("loginTokenKey", loginToken.getTokenKey());
         return map;
     }
+
+    /**
+     * @description 登出，修改状态为1.
+     * @param tokenKey
+     */
     public void logout(String tokenKey) {
         loginTokenDAO.updateStatus(tokenKey,1);
     }

@@ -5,7 +5,6 @@ import com.KyLee.dao.UserDAO;
 import com.KyLee.model.LoginToken;
 import com.KyLee.model.TokenHolder;
 import com.KyLee.model.User;
-import com.KyLee.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -59,9 +58,11 @@ public class TokenInterceptor implements HandlerInterceptor {
         return true;
     }
 
+
     @Override
     public void postHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o, ModelAndView modelAndView) throws Exception {
         User user =tokenHolder.getUser();
+        //渲染前加入拥有token的user.
         if(modelAndView!=null && user!=null){
             modelAndView.addObject("user",tokenHolder.getUser());
         }

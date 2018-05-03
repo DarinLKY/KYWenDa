@@ -18,7 +18,7 @@ public interface UserDAO {
             ," user ",
             "(",
             insertFields,
-            ") values(#{id},#{name},#{password},#{salt},#{email})"})
+            ") values(#{name},#{password},#{salt},#{email})"})
     int addUser(User user);
 
     @Select({"select * from " +tableName+" where name=#{name}"})
