@@ -39,6 +39,17 @@ public class QuestionController {
     @Autowired
     UserService userService;
 
+    /**
+     * @description: 添加问题 /question/add为前端规定的链接，
+     *               传送的变量title,content也为前端规定的存在popup.js内。
+     * @param model
+     * @param title
+     * @param content
+     * @return JSON JS代码会自动刷新模板
+     *         code=0 成功
+     *         code=1 失败
+     *         code=999 需要登录
+     */
     @RequestMapping(value = "/question/add", method = {RequestMethod.POST})
     @ResponseBody
     public String addQusetion(Model model, @RequestParam("title") String title,
@@ -66,12 +77,20 @@ public class QuestionController {
     }
 
 
-
+    /**
+     * @description: 问题详情页
+     * @param model
+     * @param questionId
+     * @return detail.html
+     */
     @RequestMapping(value = "/question/{questionId}", method = {RequestMethod.GET})
     public String addQusetion(Model model, @PathVariable("questionId") int questionId) {
+
+        //增加question详情
         Question question = questionService.getQuestionById(questionId);
         model.addAttribute("question",question);
 
+        //增加 此question 关联的 评论与评论用户
         List<ViewObject> comments =new ArrayList<ViewObject>();
         List<Comment>coms=commentService.getComment(questionId,1);
         for (Comment comment:coms){

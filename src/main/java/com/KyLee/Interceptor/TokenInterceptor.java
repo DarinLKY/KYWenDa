@@ -45,6 +45,7 @@ public class TokenInterceptor implements HandlerInterceptor {
                 }
             }
         }
+        //查询数据库Token状态
         if (loginTokenKey!=null){
             LoginToken loginToken=loginTokenDAO.selectByKey(loginTokenKey);
             if(loginToken==null||loginToken.getStatus()!=0||(loginToken.getExpired().before(new Date()))){

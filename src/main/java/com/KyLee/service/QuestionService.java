@@ -19,7 +19,7 @@ public class QuestionService {
     @Autowired
     QuestionDAO questionDAO;
     @Autowired
-    SensitiveWordService sensitiveWordServicel;
+    SensitiveWordService sensitiveWordService;
 
     public List<Question> getLatestQuestionsByUserId(int userId, int offset, int limit) {
         return questionDAO.selectLatestQuestionsByUserId(userId, offset, limit);
@@ -31,8 +31,8 @@ public class QuestionService {
         question.setContent(HtmlUtils.htmlEscape(question.getContent()));
 
         //过滤
-        question.setTitle(sensitiveWordServicel.filter(question.getTitle()));
-        question.setContent(sensitiveWordServicel.filter(question.getContent()));
+        question.setTitle(sensitiveWordService.filter(question.getTitle()));
+        question.setContent(sensitiveWordService.filter(question.getContent()));
 
         return (questionDAO.addQuestion(question)>0?question.getId():0);
     }

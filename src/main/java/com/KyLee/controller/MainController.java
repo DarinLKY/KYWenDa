@@ -64,7 +64,12 @@ public class MainController {
     }
 
 
-
+    /**
+     * @description: 得到已该用户ID相关的问题页。
+     * @param model
+     * @param userId
+     * @return shouye.html
+     */
     @RequestMapping(path={"/user/{userId}"},method = {RequestMethod.POST,RequestMethod.GET})
     public String home_index (Model model,
                         @PathVariable("userId") int userId){
@@ -73,9 +78,9 @@ public class MainController {
     }
 
     /**
-     * @description: 如果当前没有登入，则显示首页，UserId设为0。
+     * @description: 如果当前没有登入，则默认显示首页，UserId设为0。
      * @param model
-     * @return
+     * @return shouye.html
      */
     @RequestMapping(path={"/"},method = {RequestMethod.POST,RequestMethod.GET})
     public String home (Model model){

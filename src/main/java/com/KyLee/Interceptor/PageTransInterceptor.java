@@ -25,7 +25,7 @@ public class PageTransInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o) throws Exception {
         if (tokenHolder.getUser() == null) {
 
-            //这里跳转到/reglogin，后面的next=...不影响controller页面，只是加了变量。
+            //这里跳转到/reglogin，后面的?next=...不影响controller页面，只是加了变量。
             //httpServletRequest.getRequestURI()是原本的请求URL。
             httpServletResponse.sendRedirect("/reglogin?next=" + httpServletRequest.getRequestURI());
             return false;

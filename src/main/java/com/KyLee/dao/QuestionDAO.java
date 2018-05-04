@@ -14,17 +14,17 @@ import java.util.List;
 @Mapper
 public interface QuestionDAO {
     public String tableName="question";
-    String selectFields = " title ,content,user_id,created_date,comment_count ";
-    String insertFields = " id ,title ,content,user_id,created_date,comment_count ";
+    String selectFields = " id ,title ,content,user_id,created_date,comment_count ";
+    String insertFields = " title ,content,user_id,created_date,comment_count ";
     // #{} 表示bean中的字段，需要与设置的字段名相同。
     @Insert({"insert into "
             ,tableName,
             "(",
-            selectFields,
+            insertFields,
             ") values(#{title},#{content},#{userId},#{createdDate},#{commentCount})"})
     int addQuestion(Question question);
 
-    @Select({"select * from " +tableName+" where user_id=#{id}"})
+    @Select({"select * from " +tableName+" where user_id=#{userId}"})
     Question selectByUserId(int userId);
 
     @Select({"select * from " +tableName+" where id=#{id}"})

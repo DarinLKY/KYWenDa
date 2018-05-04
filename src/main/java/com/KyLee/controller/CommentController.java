@@ -41,6 +41,13 @@ public class CommentController {
     QuestionService questionService;
 
 
+    /**
+     * @description: 增加评论
+     * @param model
+     * @param content
+     * @param questionId
+     * @return /question/questionId (位于QuestionController)
+     */
     @RequestMapping(value = "/addComment"   , method = {RequestMethod.POST})
      String addComment(Model model,
                    @RequestParam("content") String content,
@@ -61,6 +68,8 @@ public class CommentController {
             comment.setContent(content);
 
             commentService.addComment(comment);
+
+            //修改问题的评论总数
             int count = commentService.getCommentCount(comment.getEntityId(), comment.getEntityType());
             questionService.updateCommentCount(comment.getEntityId(), count);
         }

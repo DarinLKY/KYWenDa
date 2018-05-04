@@ -38,6 +38,10 @@ public class UserService {
         return userDAO.selectById(id);
     }
 
+    public User getUser(String name){
+        return userDAO.selectByName(name);
+    }
+
     /**
      * @description:加载登录token，
      *              登陆已有账号需要把过期时间更新，
@@ -151,7 +155,7 @@ public class UserService {
     }
 
     /**
-     * @description 登出，修改状态为1.
+     * @description 登出，修改loginToken状态为1.
      * @param tokenKey
      */
     public void logout(String tokenKey) {

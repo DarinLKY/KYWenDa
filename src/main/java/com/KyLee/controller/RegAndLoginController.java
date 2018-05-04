@@ -64,7 +64,7 @@ public class RegAndLoginController {
      * @param request
      * @param username
      * @param password
-     * @return 注册页面
+     * @return login.html 或 跳转页(page拦截器实现)
      */
     @RequestMapping(path={"/register"},method = {RequestMethod.POST})
     public String register (Model model,
@@ -88,7 +88,7 @@ public class RegAndLoginController {
                 response.addCookie(cookie);
 
                 if (!(StringUtils.isEmpty(next))) {
-                    //return 时依然要经历拦截器，所有直接写入Cookie就可以了，拦截器会再次读取Cookie
+                    //return 时依然要经历拦截器，所以直接写入Cookie就可以了，拦截器会再次读取Cookie
                     return "redirect:" + next;
                 }
             } else if (map.get("msg") != null) {
@@ -113,7 +113,7 @@ public class RegAndLoginController {
      * @param password
      * @param next
      * @param rememberme
-     * @return
+     * @return login.html 或 跳转页(page拦截器实现)
      */
     @RequestMapping(path={"/login"},method = {RequestMethod.POST})
     public String login (Model model,
