@@ -1,10 +1,11 @@
 package com.KyLee.controller;
 
+import com.KyLee.dao.CommentDAO;
 import com.KyLee.dao.UserDAO;
-import com.KyLee.model.Question;
-import com.KyLee.model.TokenHolder;
-import com.KyLee.model.User;
+import com.KyLee.model.*;
+import com.KyLee.service.CommentService;
 import com.KyLee.service.QuestionService;
+import com.KyLee.service.UserService;
 import com.KyLee.util.JsonUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,7 +15,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * @program: zhihu0.1
@@ -29,10 +32,12 @@ public class QuestionController {
     @Autowired
     QuestionService questionService;
     @Autowired(required = false)
-    UserDAO userDAO;
+    CommentService commentService;
 
     @Autowired
     TokenHolder tokenHolder;
+    @Autowired
+    UserService userService;
 
     @RequestMapping(value = "/question/add", method = {RequestMethod.POST})
     @ResponseBody
@@ -59,12 +64,24 @@ public class QuestionController {
       }
         return JsonUtil.getJSONString(1, "失败");
     }
+
+
+
     @RequestMapping(value = "/question/{questionId}", method = {RequestMethod.GET})
     public String addQusetion(Model model, @PathVariable("questionId") int questionId) {
-        Question question = questionService.selectById(questionId);
-        User user = userDAO.selectById(question.getUserId());
+        Question question = questionService.getQuestionById(questionId);
         model.addAttribute("question",question);
-        //model.addAttribute("user",user);
+
+        List<ViewObject> comments =new ArrayList<ViewObject>();
+        List<Comment>coms=commentService.getComment(questionId,1);
+        for (Comment comment:coms){
+            ViewObject vo = new ViewObject();
+            vo.set("comment",comment);
+            vo.set("user",userService.getUser(comment.getUserId()));
+            comments.add(vo);
+        }
+        model.addAttribute("comments",comments);
+
         return  "detail";
     }
 }

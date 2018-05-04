@@ -77,6 +77,7 @@
                  data-widget="navigable" data-navigable-options="{&quot;items&quot;: &quot;&gt;.zm-item-answer&quot;}"
                  data-init="{&quot;params&quot;: {&quot;url_token&quot;: 36301524, &quot;pagesize&quot;: 10, &quot;offset&quot;: 0}, &quot;nodename&quot;: &quot;QuestionAnswerListV2&quot;}">
 
+                <!-- 评论界面，包括评论comment.comment与评论的用户comment.user-->
                 #foreach($comment in $comments)
                 <div tabindex="-1" class="zm-item-answer  zm-item-expanded" itemprop="topAnswer" itemscope=""
                      itemtype="http://schema.org/Answer" data-aid="22162611" data-atoken="66862039" data-collapsed="0"
@@ -99,8 +100,10 @@
                         <div class="zm-item-answer-author-info">
                             <a class="zm-item-link-avatar avatar-link" href="" target="_blank"
                                data-tip="p$t$yingxiaodao">
+                                <!--
                                 <img src="$comment.user.headUrl"
                                      class="zm-list-avatar avatar"></a>
+                                     -->
                             <a class="author-link" target="_blank" href="/user/$comment.user.id">$comment.user.name</a>
                             </div>
                         <div class="zm-item-vote-info" data-votecount="28" data-za-module="VoteInfo">
@@ -139,7 +142,7 @@
             </div>
             <a name="draft"></a>
             <form action="/addComment" method="post" id="commentform">
-                <input type="hidden" name="questionId" value="$question.id"/>
+                <input type="hidden" name="questionId" value="$!{question.id}"/>
             <div id="zh-question-answer-form-wrap" class="zh-question-answer-form-wrap">
                 <div class="zm-editable-editor-wrap" style="">
                     <div class="zm-editable-editor-outer">

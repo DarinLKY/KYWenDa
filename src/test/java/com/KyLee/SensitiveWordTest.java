@@ -21,7 +21,7 @@ public class SensitiveWordTest {
 
     @Test
     public void test(){
-        String s ="abcdfdsssabbs误解";
+        String s ="abcdfdsssabbsab";
         System.out.println(sensitiveWordService.filter(s));
     }
 }

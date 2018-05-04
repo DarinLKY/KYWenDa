@@ -42,7 +42,7 @@ DROP TABLE IF EXISTS `comment`;
   `created_date` DATETIME NOT NULL,
   `status` INT NOT NULL DEFAULT 0,
   PRIMARY KEY (`id`),
-  INDEX `entity_index` (`entity_id` ASC, `entity_type` ASC)
+    INDEX `entity_index` (`entity_id` ASC, `entity_type` ASC)
   ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 DROP TABLE IF EXISTS `message`;

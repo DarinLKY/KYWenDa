@@ -80,7 +80,6 @@ var oPopupAdd = new PopupAdd({
                 }).done(function (oResult) {
                     // 未登陆，跳转到登陆页面
                     if (oResult.code === 999) {
-                        //encodeURI
                         window.location.href = '/reglogin?next=' + window.encodeURIComponent(window.location.href);
                     } else {
                         oConf.ok && oConf.ok.call(that);

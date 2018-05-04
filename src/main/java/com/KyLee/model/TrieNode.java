@@ -6,7 +6,7 @@ import java.util.Hashtable;
 
 /**
  * @program: zhihu0.1
- * @description: 字典树 结点结构
+ * @description: 字典树 结点结构 用于敏感词过滤。
  * @author: KyLee
  * @create: 2018-05-03 20:34
  **/

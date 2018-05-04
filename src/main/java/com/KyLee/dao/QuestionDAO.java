@@ -1,10 +1,7 @@
 package com.KyLee.dao;
 
 import com.KyLee.model.Question;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 
@@ -28,9 +25,13 @@ public interface QuestionDAO {
     int addQuestion(Question question);
 
     @Select({"select * from " +tableName+" where user_id=#{id}"})
-    Question selectByUserId(int id);
+    Question selectByUserId(int userId);
+
+    @Select({"select * from " +tableName+" where id=#{id}"})
+    Question selectById(int id);
 
     List<Question> selectLatestQuestionsByUserId(@Param("userId") int userId, @Param("offset") int offset,
                                          @Param("limit") int limit);
-
+    @Update({"update ", tableName, " set comment_count=#{count} where id=#{id}"})
+    void updateCommentCount(@Param("id") int id, @Param("count") int count);
 }

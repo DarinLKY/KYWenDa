@@ -5,7 +5,7 @@ import java.util.Map;
 
 /**
  * @program: zhihu0.1
- * @description: 用于页面上问题对象的导入
+ * @description: 用于页面上复杂对象的显示。
  * @author: KyLee
  * @create: 2018-05-01 19:18
  **/

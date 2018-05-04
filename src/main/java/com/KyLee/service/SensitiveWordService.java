@@ -58,18 +58,18 @@ public class SensitiveWordService implements InitializingBean {
         int start = 0;
         int position = start;
 
-        while(position<text.length()){
+        while(position<text.length()) {
 
-            TrieNode p =root;
-            while(position<text.length()&&p.getSubNode(text.charAt(position))!=null){
+            TrieNode p = root;
+            while (position < text.length() && p.getSubNode(text.charAt(position)) != null) {
 
                 p = p.getSubNode(text.charAt(position));
                 //发现敏感词，start跳到后一个字符
-                if(p.isEnd()){
+                if (p.isEnd()) {
 
                     sb.append("***");
                     position++;
-                    start=position;
+                    start = position;
                     break;
                 }
                 //匹配成功，但end不为0,继续寻找下一个字符结点
@@ -79,9 +79,9 @@ public class SensitiveWordService implements InitializingBean {
                 }
             }
             //如果最后一个字符是敏感词，则无需处理
-            if(start>=text.length()){
+            if (start >= text.length()) {
                 break;
-            }else {
+            } else {
                 //以start开始的字符串不存在敏感词
                 sb.append(text.charAt(start));
                 //start跳到下一字符继续寻找。
@@ -89,7 +89,6 @@ public class SensitiveWordService implements InitializingBean {
                 position = start;
             }
         }
-         sb.append(text.substring(start));
         return sb.toString();
     }
 }
