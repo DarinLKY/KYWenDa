@@ -51,6 +51,14 @@ public class MainController {
         return "hello,spring!";
     }
     */
+
+    /**
+     * @description: 通过用户ID 得到问题
+     * @param userId
+     * @param offset
+     * @param limit
+     * @return
+     */
     private List<ViewObject> getQuestionsByUserId(int userId, int offset, int limit) {
         List<Question> questionList = questionService.getLatestQuestionsByUserId(userId, offset, limit);
         List<ViewObject> vos = new ArrayList<>();
@@ -65,7 +73,7 @@ public class MainController {
 
 
     /**
-     * @description: 得到已该用户ID相关的问题页。
+     * @description: 得到用户ID提出的问题页。
      * @param model
      * @param userId
      * @return shouye.html
@@ -78,7 +86,7 @@ public class MainController {
     }
 
     /**
-     * @description: 如果当前没有登入，则默认显示首页，UserId设为0。
+     * @description: 默认显示首页，UserId设为0。
      * @param model
      * @return shouye.html
      */

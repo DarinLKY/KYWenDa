@@ -57,6 +57,7 @@ public class TokenInterceptor implements HandlerInterceptor {
                 tokenHolder.setUser(user);
                 return true;
             }
+
         }
         return true;
     }

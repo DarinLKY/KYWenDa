@@ -4,6 +4,7 @@ import com.KyLee.dao.CommentDAO;
 import com.KyLee.dao.UserDAO;
 import com.KyLee.model.*;
 import com.KyLee.service.CommentService;
+import com.KyLee.service.LikeService;
 import com.KyLee.service.QuestionService;
 import com.KyLee.service.UserService;
 import com.KyLee.util.JsonUtil;
@@ -19,6 +20,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import static com.KyLee.model.StatusWord.ENTITY_TYPE_COMMENT;
+
 /**
  * @program: zhihu0.1
  * @description: 问题处理Controller
@@ -31,6 +34,7 @@ public class QuestionController {
 
     @Autowired
     QuestionService questionService;
+
     @Autowired(required = false)
     CommentService commentService;
 
@@ -38,17 +42,25 @@ public class QuestionController {
     TokenHolder tokenHolder;
     @Autowired
     UserService userService;
+    @Autowired
+    LikeService likeService;
 
     /**
-     * @description: 添加问题 /question/add为前端规定的链接，
-     *               传送的变量title,content也为前端规定的存在popup.js内。
+     * @description: 添加问题
+     *               前端文件：popup.js
+     *               前端链接："/question/add"
+     *               前端传入： String title , String content
+     *
+     *               中间操作：无
+     *
+     *               后端载入：JSON ->(code,msg)
+     *                       code=0 成功
+     *                       code=1 失败
+     *                       code=999 需要登录
      * @param model
      * @param title
      * @param content
-     * @return JSON JS代码会自动刷新模板
-     *         code=0 成功
-     *         code=1 失败
-     *         code=999 需要登录
+     * @return JSON
      */
     @RequestMapping(value = "/question/add", method = {RequestMethod.POST})
     @ResponseBody
@@ -79,25 +91,47 @@ public class QuestionController {
 
     /**
      * @description: 问题详情页
+     *               前端文件：shouye.html
+     *               前端链接："/question/{questionId}"
+     *               前端传入： int questionId
+     *
+     *               中间操作：无
+     *
+     *               后端载入：List<ViewObject> comments
+     *               ViewObject-> (User user ; Comment comment; int likeCount ;int disLikeCount,int liked)
      * @param model
      * @param questionId
      * @return detail.html
      */
     @RequestMapping(value = "/question/{questionId}", method = {RequestMethod.GET})
-    public String addQusetion(Model model, @PathVariable("questionId") int questionId) {
+    public String qusetiondetail(Model model, @PathVariable("questionId") int questionId) {
 
         //增加question详情
         Question question = questionService.getQuestionById(questionId);
         model.addAttribute("question",question);
+        User user = tokenHolder.getUser();
 
         //增加 此question 关联的 评论与评论用户
         List<ViewObject> comments =new ArrayList<ViewObject>();
-        List<Comment>coms=commentService.getComment(questionId,1);
+        List<Comment> coms =commentService.getComment(questionId,1);
         for (Comment comment:coms){
             ViewObject vo = new ViewObject();
+
+            if(user==null){
+                vo.set("liked",0);
+            }
+            else{
+                vo.set("liked",likeService.getLikeStatus(user.getId(),comment.getId(),ENTITY_TYPE_COMMENT));
+            }
+
+            vo.set("dislikeCount",likeService.getDislikeCount(comment.getId(),ENTITY_TYPE_COMMENT));
+            vo.set("likeCount",likeService.getLikeCount(comment.getId(),ENTITY_TYPE_COMMENT));
             vo.set("comment",comment);
             vo.set("user",userService.getUser(comment.getUserId()));
+
+
             comments.add(vo);
+
         }
         model.addAttribute("comments",comments);
 

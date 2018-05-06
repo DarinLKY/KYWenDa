@@ -22,6 +22,7 @@ public class CommentService {
 
     @Autowired
     SensitiveWordService sensitiveWordService;
+
     public List<Comment> getComment(int id,int type){
         return commentDAO.selectByEntity(id,type);
     }

@@ -94,7 +94,7 @@ public class MessageController {
      *               前端链接：/msg/detail?conversationId=
      *               前端传入：String conversationId
      *
-     *               中间操作：更新以当前登录用户为接受方，点击的对话内所有信息的已读状态。
+     *               中间操作：更新以当前登录用户为接受方，点击的对话内所有信息的未读状态 has_read = 1 。
      *
      *               后端载入：List<ViewObject> messages
      *               ViewObject-> (User user ; Message message)
@@ -130,9 +130,11 @@ public class MessageController {
 
     /**
      * @description: 消息列表
-     *               前端文件：header.html
+     *               前端文件：header.html , home.js
      *               前端链接：/msg/list
      *               前端传入：none
+     *
+     *               中间操作：无
      *
      *               后端载入：List<ViewObject> conversations
      *               ViewObject-> (User user ; Message conversation ; int unReadCount)

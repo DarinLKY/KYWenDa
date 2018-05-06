@@ -1,6 +1,8 @@
 package com.KyLee;
 
+import com.KyLee.service.LikeService;
 import com.KyLee.service.SensitiveWordService;
+import com.KyLee.util.JedisBackend;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,11 +19,11 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @SpringApplicationConfiguration(classes = ZhihuApplication.class)
 public class SensitiveWordTest {
     @Autowired(required = false)
-    SensitiveWordService sensitiveWordService;
+    JedisBackend jedisBackend;
 
     @Test
     public void test(){
         String s ="abcdfdsssabbsab";
-        System.out.println(sensitiveWordService.filter(s));
+        jedisBackend.addSet("111","testtest");
     }
 }
