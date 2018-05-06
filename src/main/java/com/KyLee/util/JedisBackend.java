@@ -8,6 +8,8 @@ import org.springframework.stereotype.Service;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 
+import java.util.List;
+
 /**
  * @program: zhihu0.1
  * @description: Jedis后台服务接口
@@ -84,6 +86,38 @@ public class JedisBackend implements InitializingBean {
             }
         }
         return false;
+    }
+
+    //从队尾取出值
+    public List<String> brpop(int timeout, String key) {
+        Jedis jedis = null;
+        try {
+            jedis = jedisPool.getResource();
+            return jedis.brpop(timeout, key);
+        } catch (Exception e) {
+            logger.error("发生异常" + e.getMessage());
+        } finally {
+            if (jedis != null) {
+                jedis.close();
+            }
+        }
+        return null;
+    }
+
+    //从对头插入值
+    public long lpush(String key, String value) {
+        Jedis jedis = null;
+        try {
+            jedis = jedisPool.getResource();
+            return jedis.lpush(key, value);
+        } catch (Exception e) {
+            logger.error("发生异常" + e.getMessage());
+        } finally {
+            if (jedis != null) {
+                jedis.close();
+            }
+        }
+        return 0;
     }
 
 }

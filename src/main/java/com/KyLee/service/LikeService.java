@@ -50,6 +50,16 @@ public class LikeService {
     }
 
     //得到用户赞踩状态。
+
+    /**
+     *
+     * @param userId
+     * @param entityId
+     * @param entityType
+     * @return 1  已赞
+     *         0  无
+     *         -1 已踩
+     */
     public long getLikeStatus(int userId,int entityId,int entityType){
         String disLikeKey = RedisKeyUtil.getDislikeKey(entityId,entityType);
         String likeKey = RedisKeyUtil.getLikeKey(entityId,entityType);

@@ -47,5 +47,9 @@ public interface MessageDAO {
     @Update({"update ", tableName, " set has_read=1 where has_read=0 and to_id=#{userId} and conversation_id=#{conversationId}"})
     void  updateCoversationHasRead(@Param("userId") int userId,@Param("conversationId") String conversationId);
 
+    @Select({"select * from " +tableName+" where  content=#{content} and conversation_id=#{conversationId}"})
+    List<Message>  selectMessageByConverAndContent(@Param("conversationId") String conversationId,@Param("content")String content);
 
+    @Delete({"delete  from " +tableName+" where  id=#{id}"})
+    boolean  deleteById(@Param("id") int id);
 }

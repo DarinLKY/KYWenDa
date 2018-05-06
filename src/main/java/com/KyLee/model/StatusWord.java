@@ -19,4 +19,5 @@ public class StatusWord {
     //评论可见状态位 1
     public static final int COMMENT_INVAILD = 1;
 
+
 }

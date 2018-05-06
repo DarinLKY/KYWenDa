@@ -47,4 +47,12 @@ public class MessageService {
     public void   updateCoversationHasRead( int userId,  String conversationId){
          messageDAO.updateCoversationHasRead(userId,conversationId);
     }
+
+    public List<Message> getMessageByConverAndContent(String conversationId,String content){
+        return messageDAO.selectMessageByConverAndContent(conversationId,content);
+    }
+    public boolean deleteById(int id){
+        return messageDAO.deleteById(id);
+    }
+
 }

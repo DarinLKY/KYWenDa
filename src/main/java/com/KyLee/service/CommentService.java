@@ -23,11 +23,11 @@ public class CommentService {
     @Autowired
     SensitiveWordService sensitiveWordService;
 
-    public List<Comment> getComment(int id,int type){
-        return commentDAO.selectByEntity(id,type);
+    public List<Comment> getComment(int entityId,int entityType){
+        return commentDAO.selectByEntity(entityId,entityType);
     }
-    public int getCommentCount(int id,int type){
-        return commentDAO.selectCountByEntity(id,type);
+    public int getCommentCount(int entityId,int entityType){
+        return commentDAO.selectCountByEntity(entityId,entityType);
     }
 
     public int addComment(Comment comment){
@@ -41,5 +41,9 @@ public class CommentService {
 
     boolean  deleteComment(int id ,int status){
         return commentDAO.updateStatus(id,status) > 0;
+    }
+
+    public Comment getComment(int id){
+        return commentDAO.selectById(id);
     }
 }

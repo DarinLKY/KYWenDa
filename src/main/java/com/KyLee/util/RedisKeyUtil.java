@@ -12,13 +12,20 @@ public class RedisKeyUtil {
     private static final String LIKE_KEY = "like";
     private static final String DISLIKE_KEY = "dislike";
 
-    //返回键值为 Like:id:type
+    private static final String EVENT_QUEUE_KEY = "event_queue";
+    //返回键值为 like:id:type
     public static String getLikeKey (int entity_id,int entity_type){
         return LIKE_KEY + SPILT_WORD+String.valueOf(entity_id)+SPILT_WORD+String.valueOf(entity_type);
     }
 
-    //返回键值为 Dislike:id:type
+    //返回键值为 dislike:id:type
     public static String getDislikeKey (int entity_id,int entity_type){
         return DISLIKE_KEY + SPILT_WORD+String.valueOf(entity_id)+SPILT_WORD+String.valueOf(entity_type);
     }
+
+    public static String getEventQueueKey(){
+        return EVENT_QUEUE_KEY ;
+    }
+
+
 }
