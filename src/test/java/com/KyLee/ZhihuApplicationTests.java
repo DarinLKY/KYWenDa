@@ -38,9 +38,9 @@ public class ZhihuApplicationTests {
 			user.setName(String.format("USER%d", i));
 			user.setPassword("3432");
 			user.setSalt("ASfd");
+
+			user.setHeadUrl(String.format("http://images.nowcoder.com/head/%dt.png", random.nextInt(1000)));
 			userDAO.addUser(user);
-
-
 			Question question = new Question();
 			question.setCommentCount(i);
 			Date date = new Date();

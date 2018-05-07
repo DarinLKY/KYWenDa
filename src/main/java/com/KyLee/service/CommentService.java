@@ -2,6 +2,7 @@ package com.KyLee.service;
 
 import com.KyLee.dao.CommentDAO;
 import com.KyLee.model.Comment;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.util.HtmlUtils;
@@ -46,4 +47,9 @@ public class CommentService {
     public Comment getComment(int id){
         return commentDAO.selectById(id);
     }
+
+    public List<Comment> getCommentsByUserId( int userId){
+        return commentDAO.selectByUserId(userId);
+    }
+
 }

@@ -31,6 +31,7 @@ public class PageTransInterceptor implements HandlerInterceptor {
             return false;
 
         }
+        /*
         if (tokenHolder.getUser() != null) {
 
             String uri =httpServletRequest.getRequestURI();
@@ -51,6 +52,7 @@ public class PageTransInterceptor implements HandlerInterceptor {
                 return false;
             }
         }
+        */
 
         return true;
     }

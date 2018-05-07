@@ -19,6 +19,13 @@ public class EventModel {
     private int actorId;
     private int ownerId;
 
+
+    public EventModel(){
+
+    }
+    public EventModel(EventType eventType){
+        this.eventType=eventType;
+    }
     private Map<String, Object> others = new HashMap<String, Object>();
 
     public Object  getOther(String key) {

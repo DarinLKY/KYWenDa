@@ -55,7 +55,7 @@ public class LikeController {
      *               前端链接：/like
      *               前端传入：int commentId
      *
-     *               中间操作：发送站内信给评论的作者
+     *               中间操作：事件 发送站内信给评论的作者
      *
      *               后端载入：JSON ->(code,msg)
      *                       (code=0 msg=likeCount) 成功
@@ -109,7 +109,7 @@ public class LikeController {
      *               前端链接：/dislike
      *               前端传入：int commentId
      *
-     *               中间操作：删除发送的站内信
+     *               中间操作：事件 删除发送的站内信
      *
      *               后端载入：JSON ->(code,msg)
      *                       (code=0 msg=likeCount) 成功

@@ -21,13 +21,13 @@ public class LikeService {
 
     public long getLikeCount(int entityId,int entityType){
         String likeKey = RedisKeyUtil.getLikeKey(entityId,entityType);
-        long count = jedisBackend.getSetCount(likeKey);
+        long count = jedisBackend.scard(likeKey);
         return count;
     }
 
     public long getDislikeCount(int entityId,int entityType){
         String disLikeKey = RedisKeyUtil.getDislikeKey(entityId,entityType);
-        long count = jedisBackend.getSetCount(disLikeKey);
+        long count = jedisBackend.scard(disLikeKey);
         return count;
     }
 
@@ -36,8 +36,8 @@ public class LikeService {
         String likeKey = RedisKeyUtil.getLikeKey(entityId,entityType);
 
         //先删除踩数，后添加赞数
-        jedisBackend.removeSet(disLikeKey,String.valueOf(userId));
-        return jedisBackend.addSet(likeKey,String.valueOf(userId));
+        jedisBackend.srem(disLikeKey,String.valueOf(userId));
+        return jedisBackend.sadd(likeKey,String.valueOf(userId));
     }
 
     public long dislike(int userId,int entityId,int entityType){
@@ -45,8 +45,8 @@ public class LikeService {
         String likeKey = RedisKeyUtil.getLikeKey(entityId,entityType);
 
         //先删除赞数，后添加踩数
-        jedisBackend.removeSet(likeKey,String.valueOf(userId));
-        return jedisBackend.addSet(dislikeKey,String.valueOf(userId));
+        jedisBackend.srem(likeKey,String.valueOf(userId));
+        return jedisBackend.sadd(dislikeKey,String.valueOf(userId));
     }
 
     //得到用户赞踩状态。
@@ -64,8 +64,8 @@ public class LikeService {
         String disLikeKey = RedisKeyUtil.getDislikeKey(entityId,entityType);
         String likeKey = RedisKeyUtil.getLikeKey(entityId,entityType);
 
-        if(jedisBackend.isSetMember(likeKey,String.valueOf(userId)))return 1;
-        else if(jedisBackend.isSetMember(disLikeKey,String.valueOf(userId)))return -1;
+        if(jedisBackend.sismember(likeKey,String.valueOf(userId)))return 1;
+        else if(jedisBackend.sismember(disLikeKey,String.valueOf(userId)))return -1;
         else return 0;
     }
 

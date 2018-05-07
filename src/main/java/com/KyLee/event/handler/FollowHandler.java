@@ -6,6 +6,7 @@ import com.KyLee.event.EventType;
 import com.KyLee.model.Message;
 import com.KyLee.model.User;
 import com.KyLee.service.MessageService;
+import com.KyLee.service.QuestionService;
 import com.KyLee.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -13,37 +14,45 @@ import org.springframework.stereotype.Component;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import static com.KyLee.model.StatusWord.ENTITY_TYPE_QUESTION;
+import static com.KyLee.model.StatusWord.ENTITY_TYPE_USER;
 
 /**
  * @program: zhihu0.1
- * @description: 用于点踩的处理器，主要是将发送的通知站内信删除
+ * @description: 关注事件
  * @author: KyLee
- * @create: 2018-05-06 19:35
+ * @create: 2018-05-07 23:31
  **/
 @Component
-public class DisLikeHandler implements EventHandler{
+public class FollowHandler implements EventHandler {
+
     @Autowired
     UserService userService;
     @Autowired
     MessageService messageService;
+    @Autowired
+    QuestionService questionService;
     @Override
     public void doHandler(EventModel eventModel) {
         Message message = new Message();
         message.setFromId(eventModel.getActorId());
         message.setToId(eventModel.getOwnerId());
+        message.setCreatedDate(new Date());
         User user = userService.getUser(eventModel.getActorId());
-        message.setContent("用户" + user.getName()
-                + "赞了你的评论,http://127.0.0.1:8080/question/" + String.valueOf(eventModel.getOther("questionId")));
-        List<Message> messages = messageService.getMessageByConverAndContent(message.getConversationId(),message.getContent());
-
-        //这里是删除一封，因为现阶段只能识别问题详情页，而不能直接导向具体评论。
-        if(!messages.isEmpty()){
-            messageService.deleteById(messages.get(0).getId());
+        if(eventModel.getEntityType()== ENTITY_TYPE_QUESTION){
+            message.setContent("用户" + user.getName()
+                    + "关注了你的问题,http://127.0.0.1:8080/question/" + eventModel.getEntityId());
         }
+        if(eventModel.getEntityType()== ENTITY_TYPE_USER){
+            message.setContent("用户" + user.getName()
+                    + "关注了你,http://127.0.0.1:8080/user/" + eventModel.getActorId());
+        }
+
+        messageService.addMessage(message);
     }
 
     @Override
     public List<EventType> getRelevanceWithEventType() {
-        return Arrays.asList(EventType.DISLIKE);
+            return Arrays.asList(EventType.FOLLOW);
     }
 }

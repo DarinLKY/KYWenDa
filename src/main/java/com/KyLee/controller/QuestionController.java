@@ -3,10 +3,7 @@ package com.KyLee.controller;
 import com.KyLee.dao.CommentDAO;
 import com.KyLee.dao.UserDAO;
 import com.KyLee.model.*;
-import com.KyLee.service.CommentService;
-import com.KyLee.service.LikeService;
-import com.KyLee.service.QuestionService;
-import com.KyLee.service.UserService;
+import com.KyLee.service.*;
 import com.KyLee.util.JsonUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,6 +18,7 @@ import java.util.Date;
 import java.util.List;
 
 import static com.KyLee.model.StatusWord.ENTITY_TYPE_COMMENT;
+import static com.KyLee.model.StatusWord.ENTITY_TYPE_QUESTION;
 
 /**
  * @program: zhihu0.1
@@ -44,6 +42,9 @@ public class QuestionController {
     UserService userService;
     @Autowired
     LikeService likeService;
+
+    @Autowired
+    FollowService followService;
 
     /**
      * @description: 添加问题
@@ -74,7 +75,7 @@ public class QuestionController {
           question.setCommentCount(0);
           question.setCreatedDate(new Date());
           if (tokenHolder.getUser() == null)
-              return JsonUtil.getJSONString(1, "添加问题失败，您必须登录。");
+              return JsonUtil.getJSONString(999, "添加问题失败，您必须登录。");
           else
               question.setUserId(tokenHolder.getUser().getId());
           if (questionService.AddQuestion(question) > 0)
@@ -97,14 +98,15 @@ public class QuestionController {
      *
      *               中间操作：无
      *
-     *               后端载入：List<ViewObject> comments
-     *               ViewObject-> (User user ; Comment comment; int likeCount ;int disLikeCount,int liked)
+     *               后端载入：List<ViewObject> comments , List<ViewObject> followUsers , boolean followed
+     *               ViewObject -> (User user , Comment comment,int likeCount,int disLikeCount,int liked)
+     *               ViewObject -> (String name , String headUrl , )
      * @param model
      * @param questionId
      * @return detail.html
      */
     @RequestMapping(value = "/question/{questionId}", method = {RequestMethod.GET})
-    public String qusetiondetail(Model model, @PathVariable("questionId") int questionId) {
+    public String qusetionDetail(Model model, @PathVariable("questionId") int questionId) {
 
         //增加question详情
         Question question = questionService.getQuestionById(questionId);
@@ -128,12 +130,31 @@ public class QuestionController {
             vo.set("likeCount",likeService.getLikeCount(comment.getId(),ENTITY_TYPE_COMMENT));
             vo.set("comment",comment);
             vo.set("user",userService.getUser(comment.getUserId()));
-
-
             comments.add(vo);
 
         }
         model.addAttribute("comments",comments);
+
+        List<ViewObject> followUsers = new ArrayList<ViewObject>();
+        // 获取关注的用户信息
+        List<Integer> users = followService.getFollowers(questionId,ENTITY_TYPE_QUESTION,0, 20);
+        for (Integer userId : users) {
+            ViewObject vo = new ViewObject();
+            User u = userService.getUser(userId);
+            if (u == null) {
+                continue;
+            }
+            vo.set("name", u.getName());
+            vo.set("headUrl", u.getHeadUrl());
+            vo.set("id", u.getId());
+            followUsers.add(vo);
+        }
+        model.addAttribute("followUsers", followUsers);
+        if (tokenHolder.getUser() != null) {
+            model.addAttribute("followed", followService.isFollowerMember(questionId, ENTITY_TYPE_QUESTION,tokenHolder.getUser().getId()));
+        } else {
+            model.addAttribute("followed", false);
+        }
 
         return  "detail";
     }

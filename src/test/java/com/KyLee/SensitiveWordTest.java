@@ -24,6 +24,6 @@ public class SensitiveWordTest {
     @Test
     public void test(){
         String s ="abcdfdsssabbsab";
-        jedisBackend.addSet("111","testtest");
+        jedisBackend.sadd("111","testtest");
     }
 }

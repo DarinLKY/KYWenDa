@@ -9,10 +9,19 @@ package com.KyLee.model;
 public class User {
     private int id ;
     private String name;
-
     private String password;
     private String salt;
     private String email;
+    private String headUrl;
+
+    public String getHeadUrl() {
+        return headUrl;
+    }
+
+    public void setHeadUrl(String headUrl) {
+        this.headUrl = headUrl;
+    }
+
 
     public String getSalt() {
         return salt;

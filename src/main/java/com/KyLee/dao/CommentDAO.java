@@ -39,4 +39,7 @@ public interface CommentDAO {
 
     @Select({"select * from "+tableName+ " where id = #{id} "})
     Comment selectById(@Param("id") int id);
+
+    @Select({"select * from "+tableName+ " where user_id = #{userId} "})
+    List<Comment> selectByUserId(@Param("userId") int userId);
 }

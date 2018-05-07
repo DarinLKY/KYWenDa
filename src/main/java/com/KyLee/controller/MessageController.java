@@ -56,7 +56,7 @@ public class MessageController {
      * @param model
      * @param toName
      * @param content
-     * @return JSON
+     * @return JSON ->(code,msg)
      */
     @RequestMapping(value = "/msg/addMessage", method = {RequestMethod.POST})
     @ResponseBody
@@ -94,7 +94,7 @@ public class MessageController {
      *               前端链接：/msg/detail?conversationId=
      *               前端传入：String conversationId
      *
-     *               中间操作：更新以当前登录用户为接受方，点击的对话内所有信息的未读状态 has_read = 1 。
+     *               中间操作：更新以当前登录用户为接受方，点击的对话内所有信息的未读状态设置为已读 has_read = 1 。
      *
      *               后端载入：List<ViewObject> messages
      *               ViewObject-> (User user ; Message message)
@@ -137,7 +137,7 @@ public class MessageController {
      *               中间操作：无
      *
      *               后端载入：List<ViewObject> conversations
-     *               ViewObject-> (User user ; Message conversation ; int unReadCount)
+     *               ViewObject-> (User user , Message conversation , int unReadCount)
      * @param model
      * @return letter.html
      */

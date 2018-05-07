@@ -86,5 +86,4 @@ public class CommentController {
         }
         return "redirect:/question/" + questionId;
     }
-
 }

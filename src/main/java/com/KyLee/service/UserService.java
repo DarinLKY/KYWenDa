@@ -106,6 +106,9 @@ public class UserService {
         regUser.setName(username);
         regUser.setSalt(UUID.randomUUID().toString().substring(0, 5));
         regUser.setPassword(MD5Util.MD5(password+regUser.getSalt()));
+        Random random = new Random();
+        //暂时使用随机头像。
+        regUser.setHeadUrl(String.format("http://images.nowcoder.com/head/%dt.png", random.nextInt(1000)));
 
 
         userDAO.addUser(regUser);

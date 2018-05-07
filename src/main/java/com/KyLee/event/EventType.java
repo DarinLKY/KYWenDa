@@ -11,7 +11,9 @@ public enum EventType {
     COMMENT(1),
     LOGIN(2),
     MAIL(3),
-    DISLIKE(4);
+    DISLIKE(4),
+    FOLLOW(5),
+    UNFOLLOW(6);
 
     private int type;
     EventType(int type) { this.type = type; }

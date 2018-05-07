@@ -7,8 +7,11 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
+import redis.clients.jedis.Transaction;
 
+import java.io.IOException;
 import java.util.List;
+import java.util.Set;
 
 /**
  * @program: zhihu0.1
@@ -27,7 +30,7 @@ public class JedisBackend implements InitializingBean {
     }
 
     //添加集合value
-    public long addSet(String key,String value){
+    public long sadd(String key,String value){
         Jedis jedis =null;
         try{
             jedis = jedisPool.getResource();
@@ -42,7 +45,7 @@ public class JedisBackend implements InitializingBean {
         return 0;
     }
     //删除集合value
-    public long removeSet(String key,String value){
+    public long srem(String key,String value){
         Jedis jedis =null;
         try{
             jedis = jedisPool.getResource();
@@ -58,7 +61,7 @@ public class JedisBackend implements InitializingBean {
     }
 
     //得到value总数
-    public long getSetCount(String key){
+    public long scard(String key){
         Jedis jedis =null;
         try{
             jedis = jedisPool.getResource();
@@ -73,7 +76,7 @@ public class JedisBackend implements InitializingBean {
         return 0;
     }
     //判断value是否在key值得集合内
-    public boolean isSetMember(String key,String value){
+    public boolean sismember(String key,String value){
         Jedis jedis =null;
         try{
             jedis = jedisPool.getResource();
@@ -119,5 +122,119 @@ public class JedisBackend implements InitializingBean {
         }
         return 0;
     }
+
+    //加入优先队列
+    public long zadd(String key, long score,String value) {
+        Jedis jedis = null;
+        try {
+            jedis = jedisPool.getResource();
+            return jedis.zadd(key,score,value);
+        } catch (Exception e) {
+            logger.error("发生异常" + e.getMessage());
+        } finally {
+            if (jedis != null) {
+                jedis.close();
+            }
+        }
+        return 0;
+    }
+
+    //移除优先队列
+    public long zrem(String key,String value) {
+        Jedis jedis = null;
+        try {
+            jedis = jedisPool.getResource();
+            return jedis.zrem(key,value);
+        } catch (Exception e) {
+            logger.error("发生异常" + e.getMessage());
+        } finally {
+            if (jedis != null) {
+                jedis.close();
+            }
+        }
+        return 0;
+    }
+
+    //得到优先队列内的数量
+    public long zcard(String key) {
+        Jedis jedis = null;
+        try {
+            jedis = jedisPool.getResource();
+            return jedis.zcard(key);
+        } catch (Exception e) {
+            logger.error("发生异常" + e.getMessage());
+        } finally {
+            if (jedis != null) {
+                jedis.close();
+            }
+        }
+        return 0;
+    }
+    public Jedis getJedis() {
+        return jedisPool.getResource();
+    }
+
+    //事务操作
+    public Transaction multi(Jedis jedis) {
+        try {
+            return jedis.multi();
+        } catch (Exception e) {
+            logger.error("发生异常" + e.getMessage());
+        } finally {
+        }
+        return null;
+    }
+
+    public List<Object> exec(Transaction tx, Jedis jedis) {
+        try {
+            return tx.exec();
+        } catch (Exception e) {
+            logger.error("发生异常" + e.getMessage());
+            tx.discard();
+        } finally {
+            if (tx != null) {
+                try {
+                    tx.close();
+                } catch (IOException ioe) {
+                    // ..
+                }
+            }
+
+            if (jedis != null) {
+                jedis.close();
+            }
+        }
+        return null;
+    }
+    public Double zscore(String key,String value){
+        Jedis jedis =null;
+        try{
+            jedis = jedisPool.getResource();
+            return jedis.zscore(key,value);
+        }catch (Exception e){
+            logger.error("Jedis查找失败"+e.getMessage());
+        }finally {
+            if(jedis!=null){
+                jedis.close();
+            }
+        }
+        return null;
+    }
+    public Set<String> zrange(String key, int start, int end) {
+        Jedis jedis = null;
+        try {
+            jedis = jedisPool.getResource();
+            return jedis.zrange(key, start, end);
+        } catch (Exception e) {
+            logger.error("发生异常" + e.getMessage());
+        } finally {
+            if (jedis != null) {
+                jedis.close();
+            }
+        }
+        return null;
+    }
+
+
 
 }

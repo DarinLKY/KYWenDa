@@ -66,6 +66,8 @@ public class EventConsumer implements InitializingBean,ApplicationContextAware {
             public void run() {
                 while(true) {
                     String key = RedisKeyUtil.getEventQueueKey();
+
+                    //弹出了(key,value)
                     List<String> events = jedisBackend.brpop(0, key);
 
                     for (String message : events) {
@@ -78,8 +80,8 @@ public class EventConsumer implements InitializingBean,ApplicationContextAware {
                             logger.error("不能识别的事件");
                             continue;
                         }
-
-                        for (EventHandler handler : config.get(eventModel.getEventType())) {
+                        List<EventHandler> handlers = config.get(eventModel.getEventType());
+                        for (EventHandler handler : handlers) {
                             handler.doHandler(eventModel);
                         }
                     }

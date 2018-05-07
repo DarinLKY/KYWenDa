@@ -12,6 +12,8 @@ public class StatusWord {
     public static final int ENTITY_TYPE_QUESTION = 1;
     //类型位 评论 2
     public static final int ENTITY_TYPE_COMMENT = 2;
+    //类型位 用户 3
+    public static final int ENTITY_TYPE_USER = 3;
 
 
     //评论可见状态位 0

@@ -6,6 +6,7 @@ CREATE TABLE `user` (
     `password` varchar(128) NOT NULL DEFAULT '',
     `salt` varchar(128) NOT NULL DEFAULT '',
     `email` varchar(256)  DEFAULT '',
+    `head_url` varchar(256) NOT NULL DEFAULT '',
     PRIMARY KEY (`id`),
     UNIQUE KEY `name` (`name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;

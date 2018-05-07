@@ -11,14 +11,14 @@ import java.util.ArrayList;
 @Mapper
 public interface UserDAO {
      String tableName="user";
-     String selectFields = " id,name,password,salt,email ";
-     String insertFields = " name,password,salt,email ";
+     String selectFields = " id,name,password,salt,email,head_url";
+     String insertFields = " name,password,salt,email, head_url";
     // #{} 表示bean中的字段，需要与设置的字段名相同。
     @Insert({"insert into "
             ," user ",
             "(",
             insertFields,
-            ") values(#{name},#{password},#{salt},#{email})"})
+            ") values(#{name},#{password},#{salt},#{email},#{headUrl})"})
     int addUser(User user);
 
     @Select({"select * from " +tableName+" where name=#{name}"})
