@@ -8,17 +8,15 @@ package com.KyLee.util;
  **/
 public class RedisKeyUtil {
     private static final String SPILT_WORD = ":";
-
     private static final String LIKE_KEY = "like";
     private static final String DISLIKE_KEY = "dislike";
-
     private static final String EVENT_QUEUE_KEY = "event_queue";
-
     //某个类型的 关注者
     private static final String FOLLOWER_KEY = "follower";
-
     //某个类型的 所有关注的对象
     private static final String FOLLOWEE_KEY = "followee";
+    private static String TIMELINE_KEY = "timeline";
+
 
     //返回键值为 like:id:type
     public static String getLikeKey (int entity_id,int entity_type){
@@ -45,6 +43,9 @@ public class RedisKeyUtil {
         return FOLLOWEE_KEY+ SPILT_WORD+String.valueOf(entity_id)+SPILT_WORD+String.valueOf(entity_type);
     }
 
+    public static String getTimelineKey(int userId){
+        return TIMELINE_KEY+SPILT_WORD+String.valueOf(userId);
+    }
 
 
 

@@ -137,7 +137,7 @@ public class QuestionController {
 
         List<ViewObject> followUsers = new ArrayList<ViewObject>();
         // 获取关注的用户信息
-        List<Integer> users = followService.getFollowers(questionId,ENTITY_TYPE_QUESTION,0, 20);
+        List<Integer> users = followService.getFollowerIds(questionId,ENTITY_TYPE_QUESTION,0, 20);
         for (Integer userId : users) {
             ViewObject vo = new ViewObject();
             User u = userService.getUser(userId);

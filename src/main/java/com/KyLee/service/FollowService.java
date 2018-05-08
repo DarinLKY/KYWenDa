@@ -35,8 +35,8 @@ public class FollowService {
 
         Jedis jedis = jedisBackend.getJedis();
         Transaction tx = jedisBackend.multi(jedis);
-        //以时间为score，
-        // 被关注者 添加 自己被关注 的 id；
+        // 以时间为score，
+        // 被关注者 添加 自己被关注 的 用户id；
         // 关注者 添加 自己已关注的 id
         tx.zadd(followerKey,new Date().getTime(),String.valueOf(userId));
         tx.zadd(followeeKey,new Date().getTime(),String.valueOf(entityId));
@@ -46,7 +46,6 @@ public class FollowService {
 
     public boolean unFollow(int userId,int entityId,int entityType){
 
-        //某实体被关注，因为问题不会主体，所以这里的value只可能是User的id
         String followerKey = RedisKeyUtil.getFollowerKey(entityId,entityType);
         //用户关注列表，用户并指定关注的类型。
         String followeeKey = RedisKeyUtil.getFolloweeKey(userId ,entityType);
@@ -88,12 +87,12 @@ public class FollowService {
         }
         return ids;
     }
-    public List<Integer> getFollowers(int entityId,int entityType,int offset,int count){
+    public List<Integer> getFollowerIds(int entityId,int entityType,int offset,int count){
         String followerKey = RedisKeyUtil.getFollowerKey(entityId,entityType);
-        return getIdsFromSet(jedisBackend.zrange(followerKey,offset,count));
+        return getIdsFromSet(jedisBackend.zrevrange(followerKey,offset,count));
     }
-    public List<Integer> getFollowees(int userId,int entityType,int offset,int count){
+    public List<Integer> getFolloweeIds(int userId,int entityType,int offset,int count){
         String followeeKey = RedisKeyUtil.getFolloweeKey(userId,entityType);
-        return getIdsFromSet(jedisBackend.zrange(followeeKey,offset,count));
+        return getIdsFromSet(jedisBackend.zrevrange(followeeKey,offset,count));
     }
 }

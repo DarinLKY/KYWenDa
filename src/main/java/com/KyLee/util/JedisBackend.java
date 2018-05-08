@@ -23,10 +23,11 @@ import java.util.Set;
 public class JedisBackend implements InitializingBean {
     private static final Logger logger = LoggerFactory.getLogger(JedisBackend.class);
     private static final String DATABASE ="10";
+    private static final String port = "6379";
     private JedisPool jedisPool;
     @Override
     public void afterPropertiesSet() throws Exception {
-        jedisPool = new JedisPool("redis://localhost:6379/10");
+        jedisPool = new JedisPool("redis://localhost:"+port+"/"+DATABASE);
     }
 
     //添加集合value
@@ -122,7 +123,20 @@ public class JedisBackend implements InitializingBean {
         }
         return 0;
     }
-
+    public List<String> lrange(String key, int start, int end) {
+        Jedis jedis = null;
+        try {
+            jedis = jedisPool.getResource();
+            return jedis.lrange(key, start, end);
+        } catch (Exception e) {
+            logger.error("发生异常" + e.getMessage());
+        } finally {
+            if (jedis != null) {
+                jedis.close();
+            }
+        }
+        return null;
+    }
     //加入优先队列
     public long zadd(String key, long score,String value) {
         Jedis jedis = null;
@@ -220,11 +234,27 @@ public class JedisBackend implements InitializingBean {
         }
         return null;
     }
+
+    //按score从小到大排列
     public Set<String> zrange(String key, int start, int end) {
         Jedis jedis = null;
         try {
             jedis = jedisPool.getResource();
             return jedis.zrange(key, start, end);
+        } catch (Exception e) {
+            logger.error("发生异常" + e.getMessage());
+        } finally {
+            if (jedis != null) {
+                jedis.close();
+            }
+        }
+        return null;
+    }
+    public Set<String> zrevrange(String key, int start, int end) {
+        Jedis jedis = null;
+        try {
+            jedis = jedisPool.getResource();
+            return jedis.zrevrange(key, start, end);
         } catch (Exception e) {
             logger.error("发生异常" + e.getMessage());
         } finally {

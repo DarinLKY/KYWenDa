@@ -65,7 +65,7 @@ public class FollowerController {
      *                       code与当前用户关注的人的总数
      *                       code=0 成功
      *                       code=1 失败
-     *
+     *                       code=2 不能关注自己
      * @param userId
      * @return JSON ->(code,followerCount)
      */
@@ -76,14 +76,18 @@ public class FollowerController {
         if(localUser == null){
             return JsonUtil.getJSONString(999);
         }
-
+        //不能关注自己
+        if(localUser.getId()==userId){
+            return JsonUtil.getJSONString(2,String.valueOf(followService.getFolloweeCount(localUser.getId(),ENTITY_TYPE_USER)));
+        }
+        boolean res =  followService.follow(localUser.getId(),userId,ENTITY_TYPE_USER);
         eventProducer.fireEvent(new EventModel(EventType.FOLLOW)
                 .setOwnerId(userId)
                 .setActorId(localUser.getId())
                 .setEntityType(ENTITY_TYPE_USER)
                 .setEntityId(userId));
 
-       boolean res =  followService.follow(localUser.getId(),userId,ENTITY_TYPE_USER);
+
         // 返回当前用户 关注的人数
         return JsonUtil.getJSONString(res == true ? 0:1,String.valueOf(followService.getFolloweeCount(localUser.getId(),ENTITY_TYPE_USER)));
     }
@@ -108,6 +112,8 @@ public class FollowerController {
     @ResponseBody
     public String unfollowUser(@RequestParam("userId") int userId) {
         User localUser = tokenHolder.getUser();
+
+
         if(localUser == null){
             return JsonUtil.getJSONString(999);
         }
@@ -199,7 +205,7 @@ public class FollowerController {
 
         Map<String, Object> info = new Hashtable<String, Object>();
         info.put("id", localUser.getId());
-        info.put("count", followService.getFollowerCount(ENTITY_TYPE_QUESTION, questionId));
+        info.put("count", followService.getFollowerCount(questionId,ENTITY_TYPE_QUESTION));
         return JsonUtil.getJSONString(res == true ? 0:1,info);
     }
 
@@ -225,7 +231,7 @@ public class FollowerController {
 
         User localUser =tokenHolder.getUser();
         long followerCount = followService.getFollowerCount(userId,ENTITY_TYPE_USER);
-        List<Integer> followerIds = followService.getFollowers(userId,ENTITY_TYPE_USER,0,(int)followerCount);
+        List<Integer> followerIds = followService.getFollowerIds(userId,ENTITY_TYPE_USER,0,(int)followerCount);
         if (localUser != null) {
             model.addAttribute("followers", getUsersInfo(localUser.getId(), followerIds));
         } else {
@@ -257,7 +263,7 @@ public class FollowerController {
     public String followees(Model model, @PathVariable("uid") int userId) {
         User localUser =tokenHolder.getUser();
         long followeeCount = followService.getFolloweeCount(userId,ENTITY_TYPE_USER);
-        List<Integer> followeeIds = followService.getFollowees(userId,ENTITY_TYPE_USER,0,(int)followeeCount);
+        List<Integer> followeeIds = followService.getFolloweeIds(userId,ENTITY_TYPE_USER,0,(int)followeeCount);
         if (localUser != null) {
             model.addAttribute("followees", getUsersInfo(localUser.getId(), followeeIds));
         } else {

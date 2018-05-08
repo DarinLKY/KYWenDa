@@ -1,6 +1,9 @@
 package com.KyLee.service;
 
+import com.KyLee.controller.FollowerController;
 import com.KyLee.model.TrieNode;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +18,7 @@ import java.util.ArrayList;
 @Service
 public class SensitiveWordService implements InitializingBean {
 
+    private static final Logger logger = LoggerFactory.getLogger(SensitiveWordService.class);
     private static TrieNode root = new TrieNode() ;
 
 
@@ -25,10 +29,10 @@ public class SensitiveWordService implements InitializingBean {
         words.add("误解");
         words.add("误解了");
         words.add("abc");
+        logger.info("加载敏感词完毕");
         for (int i=0;i<words.size();i++){
             addTrieNode(words.get(i));
         }
-        System.out.println("加载完毕");
     }
 
     private void addTrieNode(String word){

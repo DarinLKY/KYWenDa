@@ -1,5 +1,8 @@
 package com.KyLee.controller;
 
+import com.KyLee.event.EventModel;
+import com.KyLee.event.EventProducer;
+import com.KyLee.event.EventType;
 import com.KyLee.model.Comment;
 import com.KyLee.model.TokenHolder;
 import com.KyLee.service.CommentService;
@@ -38,7 +41,8 @@ public class CommentController {
     @Autowired
     QuestionService questionService;
 
-
+    @Autowired
+    EventProducer eventProducer;
     /**
      * @description: 添加对问题的评论
      *               前端文件：popup.js
@@ -75,11 +79,15 @@ public class CommentController {
             comment.setStatus(COMMENT_VAILD);
             comment.setContent(content);
 
-            commentService.addComment(comment);
+            //单纯这样返回的永远是1.
+            int comment_id=commentService.addComment(comment);
 
             //修改问题的评论总数
             int count = commentService.getCommentCount(comment.getEntityId(), comment.getEntityType());
             questionService.updateCommentCount(comment.getEntityId(), count);
+
+            eventProducer.fireEvent(new EventModel(EventType.COMMENT).setActorId(comment.getUserId())
+                    .setEntityId(questionId).setOthers("commentId",comment_id));
         }
         catch(Exception e){
             logger.error("添加评论失败"+e.getMessage());
