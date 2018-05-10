@@ -34,13 +34,15 @@ public class RedisKeyUtil {
     }
 
     //返回键值为 follower:entity_id:id:entity_type
+    // values代表 （类型为entity_type，ID为entity_id对象） 的关注者。
     public static String getFollowerKey (int entity_id,int entity_type){
         return FOLLOWER_KEY+ SPILT_WORD+String.valueOf(entity_id)+SPILT_WORD+String.valueOf(entity_type);
     }
 
-    //返回键值为 followee:userId:type
-    public static String getFolloweeKey (int entity_id,int entity_type){
-        return FOLLOWEE_KEY+ SPILT_WORD+String.valueOf(entity_id)+SPILT_WORD+String.valueOf(entity_type);
+    //返回键值为 followee:userId:entity_type , 因为 能做出关注动作的只有用户，所以key的发起者只有用户。
+    //values代表 （userId关注的 类型为 entity_type的数据的）列表。
+    public static String getFolloweeKey (int userId,int entity_type){
+        return FOLLOWEE_KEY+ SPILT_WORD+String.valueOf(userId)+SPILT_WORD+String.valueOf(entity_type);
     }
 
     public static String getTimelineKey(int userId){

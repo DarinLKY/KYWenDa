@@ -28,7 +28,7 @@ public class FollowService {
     JedisBackend jedisBackend;
     public boolean follow(int userId,int entityId,int entityType){
 
-        //某实体被关注，因为问题不会主体，所以这里的value只可能是User的id
+        //某实体被关注，增加关注者。
         String followerKey = RedisKeyUtil.getFollowerKey(entityId,entityType);
         //用户关注列表，用户并指定关注的类型。
         String followeeKey = RedisKeyUtil.getFolloweeKey(userId ,entityType);

@@ -156,10 +156,10 @@ public class FollowerController {
 
         Question question = questionService.getQuestionById(questionId);
         eventProducer.fireEvent(new EventModel(EventType.FOLLOW)
-                .setOwnerId(questionId)
+                .setOwnerId(question.getUserId())
                 .setActorId(localUser.getId())
                 .setEntityType(ENTITY_TYPE_QUESTION)
-                .setEntityId(question.getUserId()));
+                .setEntityId(question.getId()));
         Map<String, Object> info = new Hashtable<String, Object>();
 
         //写入JSON信息。
@@ -198,10 +198,10 @@ public class FollowerController {
 
         Question question = questionService.getQuestionById(questionId);
         eventProducer.fireEvent(new EventModel(EventType.UNFOLLOW)
-                .setOwnerId(questionId)
+                .setOwnerId(question.getUserId())
                 .setActorId(localUser.getId())
                 .setEntityType(ENTITY_TYPE_QUESTION)
-                .setEntityId(question.getUserId()));
+                .setEntityId(question.getId()));
 
         Map<String, Object> info = new Hashtable<String, Object>();
         info.put("id", localUser.getId());

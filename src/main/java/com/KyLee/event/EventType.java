@@ -13,7 +13,8 @@ public enum EventType {
     MAIL(3),
     DISLIKE(4),
     FOLLOW(5),
-    UNFOLLOW(6);
+    UNFOLLOW(6),
+    ADD_QUESTION(7);
 
     private int type;
     EventType(int type) { this.type = type; }

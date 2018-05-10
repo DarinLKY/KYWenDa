@@ -48,6 +48,9 @@ public class FollowHandler implements EventHandler {
                     + "关注了你,http://127.0.0.1:8080/user/" + eventModel.getActorId());
         }
 
+        //这里应该修改为系统通知，自己关注的动作不应该被自己发现，除非是类似于广播给粉丝，或者是直接发消息给指定用户。
+        //另外关注这个动作没有必要发通知，应该是在自己的问题或关注的问题有了新的回复，或者自己的评论得到了赞
+        //赞可以实现为由多少个用户给自己的评论点赞了，而不是每一个用户赞一次都发一次通知。
         messageService.addMessage(message);
     }
 

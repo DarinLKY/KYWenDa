@@ -2,6 +2,9 @@ package com.KyLee.controller;
 
 import com.KyLee.dao.CommentDAO;
 import com.KyLee.dao.UserDAO;
+import com.KyLee.event.EventModel;
+import com.KyLee.event.EventProducer;
+import com.KyLee.event.EventType;
 import com.KyLee.model.*;
 import com.KyLee.service.*;
 import com.KyLee.util.JsonUtil;
@@ -46,6 +49,9 @@ public class QuestionController {
     @Autowired
     FollowService followService;
 
+    @Autowired
+    EventProducer eventProducer;
+
     /**
      * @description: 添加问题
      *               前端文件：popup.js
@@ -78,8 +84,12 @@ public class QuestionController {
               return JsonUtil.getJSONString(999, "添加问题失败，您必须登录。");
           else
               question.setUserId(tokenHolder.getUser().getId());
-          if (questionService.AddQuestion(question) > 0)
+          if (questionService.AddQuestion(question) > 0) {
+              eventProducer.fireEvent(new EventModel(EventType.ADD_QUESTION)
+                      .setActorId(question.getUserId()).setEntityId(question.getId())
+                      .setOthers("title", question.getTitle()).setOthers("content", question.getContent()));
               return JsonUtil.getJSONString(0);
+          }
           else
               return JsonUtil.getJSONString(1, "添加问题失败");
       }
@@ -115,7 +125,7 @@ public class QuestionController {
 
         //增加 此question 关联的 评论与评论用户
         List<ViewObject> comments =new ArrayList<ViewObject>();
-        List<Comment> coms =commentService.getComment(questionId,1);
+        List<Comment> coms =commentService.getComment(questionId,ENTITY_TYPE_QUESTION);
         for (Comment comment:coms){
             ViewObject vo = new ViewObject();
 
