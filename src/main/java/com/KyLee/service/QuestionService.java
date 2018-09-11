@@ -16,7 +16,7 @@ import java.util.List;
  **/
 @Service
 public class QuestionService {
-    @Autowired
+    @Autowired(required = false)
     QuestionDAO questionDAO;
     @Autowired
     SensitiveWordService sensitiveWordService;

@@ -13,8 +13,11 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * Created by nowcoder on 2016/8/28.
- */
+ * @program: zhihu0.1
+ * @description: 添加问题搜索索引
+ * @author: KyLee
+ * @create: 2018-05-08 00:00
+ **/
 @Component
 public class AddQuestionHandler implements EventHandler {
     private static final Logger logger = LoggerFactory.getLogger(AddQuestionHandler.class);

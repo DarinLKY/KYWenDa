@@ -55,19 +55,16 @@ public class FeedController {
     @Autowired
     FollowService followService;
     /**
-     * @description: 添加评论
+     * @description: 推送Feed
      *               前端文件：action.js
-     *               前端链接：/like
-     *               前端传入：int commentId
+     *               前端链接：/pushfeeds
+     *               前端传入：无
      *
-     *               中间操作：事件 发送站内信给评论的作者
+     *               中间操作：无
      *
-     *               后端载入：JSON ->(code,msg)
-     *                       (code=0 msg=likeCount) 成功
-     *                       code=1 失败
-     *                       code=999 需要登录
+     *               后端载入：List<Feed> feeds
      * @param model
-     * @return JSON
+     * @return feeds.html
      */
 
     @RequestMapping(value = "/pushfeeds" , method = {RequestMethod.POST,RequestMethod.GET})
@@ -102,7 +99,6 @@ public class FeedController {
      *
      *               后端载入：List<Feed> feeds
      * @param model
-     * @param commentId
      * @return feeds.html
      */
     @RequestMapping(value = "/pullfeeds"   , method = {RequestMethod.POST,RequestMethod.GET})

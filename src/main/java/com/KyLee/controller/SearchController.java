@@ -52,16 +52,20 @@ public class SearchController {
     @Autowired
     EventProducer eventProducer;
     /**
-     * @description: 添加对问题的评论
+     * @description: 搜索
      *               前端文件：popup.js
-     *               前端链接：/addComment
-     *               前端传入：int questionId ,String context
+     *               前端链接：/search
+     *               前端传入：String q, int offset ,int count
      *
-     *               中间操作：修改问题的评论总数
+     *               中间操作：无
      *
-     *               后端返回：问题详情页
+     *               后端返回：List<ViewObject> vos , String keyword
+     *                       ViewObject -> Question q, int followCount , User user
      * @param model
-     * @return "redirect:/question/" + questionId
+     * @param keyword
+     * @param offset
+     * @param count
+     * @return result.html
      */
     @RequestMapping(path = {"/search"}, method = {RequestMethod.GET})
     public String search(Model model, @RequestParam("q") String keyword,
@@ -70,6 +74,7 @@ public class SearchController {
         try {
 
             //这里的question只有title和content 和 ID
+            //所以需要通过查找ID，并需要把标注了强调搜索关键词的题目与内容注入到Question中
             List<Question> questionList = searchService.searchQuestion(keyword, offset, count,
                     "<font color=\"red\">", "</font>");
             List<ViewObject> vos = new ArrayList<>();
@@ -84,6 +89,7 @@ public class SearchController {
                 }
                 vo.set("question", q);
                 vo.set("followCount", followService.getFollowerCount(ENTITY_TYPE_QUESTION, question.getId()));
+                //题目的作者
                 vo.set("user", userService.getUser(q.getUserId()));
                 vos.add(vo);
             }

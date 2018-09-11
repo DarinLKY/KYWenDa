@@ -28,6 +28,16 @@ public class SearchService {
     private static final String QUESTION_CONTENT_FIELD = "question_content";
 
 
+    /**
+     * @description: 搜索
+     * @param keyword 搜索词
+     * @param offset 分页前缀
+     * @param count 限制条数
+     * @param hlPre 强调字体前缀
+     * @param hlPos 强调字体后缀
+     * @return List<Question>
+     * @throws Exception
+     */
     public List<Question> searchQuestion(String keyword, int offset, int count , String hlPre, String hlPos)throws  Exception{
         List<Question> questionList = new ArrayList<>();
         SolrQuery query = new SolrQuery(keyword);
@@ -39,6 +49,7 @@ public class SearchService {
         query.set("h1.f1",QUESTION_TITLE_FIELD+" "+QUESTION_CONTENT_FIELD);
         query.set("df",QUESTION_TITLE_FIELD);
         QueryResponse response = client.query(query);
+        //通过solr的map结构提取题目与内容。
         for (Map.Entry<String, Map<String, List<String>>> entry : response.getHighlighting().entrySet()) {
             Question q = new Question();
             q.setId(Integer.parseInt(entry.getKey()));
@@ -59,6 +70,14 @@ public class SearchService {
         return questionList;
     }
 
+    /**
+     * @description:加入问题的时候添加索引
+     * @param qid
+     * @param title
+     * @param content
+     * @return
+     * @throws Exception
+     */
     public boolean indexQuestion(int qid, String title, String content) throws Exception {
         SolrInputDocument doc =  new SolrInputDocument();
         doc.setField("id", qid);

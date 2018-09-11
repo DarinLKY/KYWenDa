@@ -31,7 +31,7 @@ public class EventConsumer implements InitializingBean,ApplicationContextAware {
 
     /*实际上这是一个多对多的关系，type对应HandlerList（整个任务所需的handler）  handler对应多个type（handler可以处理任务的部分或全部）
 
-     config的功能就是从  handler对应多个type 的关系中 变为  type对应HandlerList 的hashMap */
+     config的功能就是从  handler对应多个type 的关系中 变为  type对应HandlerList 的 hashMap */
     private static Map<EventType,List<EventHandler>> config = new Hashtable<EventType,List<EventHandler>>();
 
     private ApplicationContext applicationContext;

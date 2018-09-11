@@ -58,7 +58,7 @@ public class QuestionController {
      *               前端链接："/question/add"
      *               前端传入： String title , String content
      *
-     *               中间操作：无
+     *               中间操作：发出ADD_QUESTION事件，添加搜索索引。
      *
      *               后端载入：JSON ->(code,msg)
      *                       code=0 成功
@@ -109,8 +109,8 @@ public class QuestionController {
      *               中间操作：无
      *
      *               后端载入：List<ViewObject> comments , List<ViewObject> followUsers , boolean followed
-     *               ViewObject -> (User user , Comment comment,int likeCount,int disLikeCount,int liked)
-     *               ViewObject -> (String name , String headUrl , )
+     *               comments ViewObject -> (User user , Comment comment,int likeCount,int disLikeCount,int liked)
+     *               followUsers ViewObject -> (String name , String headUrl , id)
      * @param model
      * @param questionId
      * @return detail.html
